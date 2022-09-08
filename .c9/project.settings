@@ -41,5 +41,13 @@
     },
     "welcome": {
         "@first": true
+    },
+    "workspace": {
+        "@folders": [
+            {
+                "name": ".ssh",
+                "path": "~/.ssh"
+            }
+        ]
     }
 }
