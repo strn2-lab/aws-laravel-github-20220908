@@ -104,7 +104,12 @@
                                 <div>
                                 <td class="table-text">
                                      <img src="upload/{{$book->item_file}}" width="100">
-                                    </div>
+                                </div>
+                                <div>
+                                <td class="table-text">
+                                     <div>{{ Helper::xxx('Hello world!!') }}</div>
+                                </div>
+                                    
                                 </td>
                                 <td class="table-text">
                                     
