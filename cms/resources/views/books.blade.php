@@ -5,7 +5,7 @@
     <div class = "container">
     <div class="card-body">
         <div class="card-title">
-            勤怠管理アプリケーション
+            勤怠登録
         </div>
 
         <!-- バリデーションエラーの表示に使用-->
@@ -19,27 +19,27 @@
             <div class="form-row col-md-12">
                 <div class="form-group col-md-6">
                     <label for="book" class="col-sm-3 control-label">日付</label>
-                    <input type="date" name="item_date" class="form-control">
+                    <input type="date" name="item_date" class="form-control" value="{{ old('item_date') }}">
                 </div>
             </div>
             <div class="form-row col-md-12">
                 <div class="form-group col-md-6">
                     <label for="number" class="col-sm-3 control-label">勤務開始時間</label>
-                    <input type="time" name="item_number" class="form-control">
+                    <input type="time" name="item_number" class="form-control" value="{{ old('item_number') }}">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="number" class="col-sm-3 control-label">勤務終了時間</label>
-                    <input type="time" name="item_number2" class="form-control">
+                    <input type="time" name="item_number2" class="form-control" value="{{ old('item_number2') }}">
                 </div>
             </div>
             <div class="form-row col-md-12">
                 <div class="form-group col-md-6">
                     <label for="number" class="col-sm-3 control-label">休憩開始時間</label>
-                    <input type="time" name="item_number3" class="form-control">
+                    <input type="time" name="item_number3" class="form-control" value="{{ old('item_number3') }}">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="number" class="col-sm-3 control-label">休憩終了時間</label>
-                    <input type="time" name="item_number4" class="form-control">
+                    <input type="time" name="item_number4" class="form-control" value="{{ old('item_number4') }}">
                 </div>
             </div>
             
@@ -80,6 +80,7 @@
                         <th>休憩開始時間</th>
                         <th>休憩終了時間</th>
                         <th>ファイル</th>
+                        <th>休憩時間</th>
                         <th>実働時間</th>
                         <th>&nbsp;</th>
                     </thead>
