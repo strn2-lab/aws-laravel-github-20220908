@@ -80,6 +80,7 @@
                         <th>休憩開始時間</th>
                         <th>休憩終了時間</th>
                         <th>ファイル</th>
+                        <th>実働時間</th>
                         <th>&nbsp;</th>
                     </thead>
                     <!-- テーブル本体 -->
@@ -107,7 +108,7 @@
                                 </div>
                                 <div>
                                 <td class="table-text">
-                                     <div>{{ Helper::xxx('Hello world!!') }}</div>
+                                     <div>{{ Helper::xxx($book->id) }}</div>
                                 </div>
                                     
                                 </td>
