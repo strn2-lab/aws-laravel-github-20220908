@@ -18,6 +18,7 @@ class CreateBooksTable extends Migration
             $table->bigInteger('user_id'); //Add:user_id
             $table->date('item_date');
             $table->string('item_file');     //Add:item_file
+            $table->string('item_icon');     //Add:item_icon          
             $table->time('item_number');
             $table->time('item_number2');
             $table->time('item_number3');

@@ -109,7 +109,11 @@
                                 </div>
                                 <div>
                                 <td class="table-text">
-                                     <div>{{ Helper::xxx($book->id) }}</div>
+                                     <div>{{ Helper::BreakCalc($book->id) }}</div>
+                                </div>
+                                <div>
+                                <td class="table-text">
+                                     <div>{{ Helper::WorkCalc($book->id) }}</div>
                                 </div>
                                     
                                 </td>
