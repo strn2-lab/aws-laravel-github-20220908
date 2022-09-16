@@ -107,6 +107,14 @@ class BooksController extends Controller
         $book->delete();
         return redirect('/');
     }
+    
+    //設定
+    public function UserSetting() {
+        $users = Book::where('user_id',Auth::user()->id);
+        return view('setting', [
+            'setting' => $users,
+        ]);
+    }
    
     
     

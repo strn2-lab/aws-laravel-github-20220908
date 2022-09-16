@@ -17,6 +17,9 @@ Route::post('/books/update','BooksController@update');
 //本を削除
 Route::delete('/book/{book}','BooksController@destroy');
 
+//設定
+Route::get('/setting','BooksController@UserSetting');
+
 //Auth
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
