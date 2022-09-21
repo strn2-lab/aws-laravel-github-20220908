@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 //使うClassを宣言:自分で追加
 use App\Book;   //Bookモデルを使えるようにする
+use App\User;
 use Validator;  //バリデーションを使えるようにする
 use Auth;       //認証モデルを使用する
 use Helper;
@@ -31,7 +32,7 @@ class BooksController extends Controller
     public function edit($book_id){
         $books = Book::where('user_id',Auth::user()->id)->find($book_id);
         return view('booksedit', [
-           'book' => $booksc
+           'book' => $books
         ]);
     }
     
@@ -108,14 +109,81 @@ class BooksController extends Controller
         return redirect('/');
     }
     
-    //設定
+    //設定画面
     public function UserSetting() {
-        $users = Book::where('user_id',Auth::user()->id);
+        $users = User::where('user_id',Auth::user()->id);
         return view('setting', [
             'setting' => $users,
         ]);
     }
-   
     
+    //設定更新
+    public function settingupdate(Request $request) {
+        //バリデーション
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]); 
+        //バリデーション:エラー 
+        if ($validator->fails()) {
+            return redirect('/')
+                ->withInput()
+                ->withErrors($validator);
+        }
+        
+        //設定更新
+        $users = User::find(Auth::user()->id);
+        $users->name   = $request->name;
+        $users->email = $request->email;
+        $users->password = $request->password;
+        $users->save();
+        return redirect('/setting')->with('message', '更新が完了しました');
+    }
     
+
+    public function passwordedit()
+    {
+        $user = \Auth::user();
+        return view('passwordform');
+    }
+    
+    protected function validator(array $data)
+    {
+        return Validator::make($data,[
+            'new_password' => 'required|string|min:8|confirmed',
+            ]);
+    }
+    
+    public function passwordupdate(Request $request)
+    {
+
+        $user = \Auth::user();
+        if(!password_verify($request->current_password,$user->password))
+        {
+            return redirect('/password/change')
+                ->with('warning','パスワードが違います');
+        }
+
+        //新規パスワードの確認
+        $this->validator($request->all())->validate();
+
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return redirect ('/passwordform')
+            ->with('status','パスワードの変更が終了しました');
+    }
+    public function userdestroy()
+    {
+        $user = User::find(Auth::user()->id);
+        $user->delete();
+        return redirect('/');
+    }
+
+    public function deleteconfirm()
+    {
+        return view('users.deleteconfirm');
+    }
 }

@@ -5,7 +5,7 @@
     <div class = "container">
     <div class="card-body">
         <div class="card-title">
-            設定
+            ユーザー設定
         </div>
 
         <!-- バリデーションエラーの表示に使用-->
@@ -13,31 +13,51 @@
         <!-- バリデーションエラーの表示に使用-->
 
         <!-- 本のタイトル -->
-        <form enctype="multipart/form-data" action="{{ url('books') }}"
-        method="POST" class="form-horizontal">
+        <form action="{{ url('setting/settingupdate') }}" method="POST">
             @csrf
             <div class="form-row col-md-12">
                 <div class="form-group col-md-6">
                     <label for="book" class="col-sm-6 control-label">名前</label>
-                    <input type="text" name="item_date" class="form-control" value="{{ old('item_date') }}">
+                    <input type="text" name="name" class="form-control" value="{{ Auth::user()->name }}">
                 </div>
             </div>
             <div class="form-row col-md-12">
                 <div class="form-group col-md-6">
                     <label for="number" class="col-sm-6 control-label">メールアドレス</label>
-                    <input type="time" name="item_number" class="form-control" value="{{ old('item_number') }}">
+                    <input type="text" name="email" class="form-control" value="{{ Auth::user()->email }}">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="number" class="col-sm-6 control-label">パスワード</label>
-                    <input type="time" name="item_number2" class="form-control" value="{{ old('item_number2') }}">
+                    <label for="number" class="col-sm-6 control-label"></label>
+                    <input type="hidden" name="password" class="form-control" value="{{ Auth::user()->password }}">
                 </div>
             </div>
             <div class="col-sm-6">
                 <label>アイコン</label>
-                  <input type="file" name="item_file">
+                  <input type="file" name="item_icon">
             </div>
+            <div class="form-row col-md-12">
+        <a href="{{ url('passwordform/') }}">パスワードの変更</a>
+        </div>
+            <!-- 設定 登録ボタン -->
+            <div class="form-row col-md-12">
+                <div class="col-sm-offset-3 col-sm-6">
+                    <button type="submit" class="btn btn-primary">
+                    Save
+                    </button>
+                </div>
+            </div>
+            <div class="form-row col-md-12">
+        <a href="{{ url('users/deleteconfirm/') }}">退会はこちら</a>
+        </div>
+            
+            
+            
+            <!-- id値を送信 -->
+         <input type="hidden" name="id" value="{{Auth::user()->id}}">
+         <!--/ id値を送信 -->
 
         </form>
+        
     </div>
     
     @if (session('message'))

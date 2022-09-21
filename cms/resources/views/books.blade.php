@@ -134,7 +134,7 @@
 
                                 <!-- 本: 削除ボタン -->
                                 <td>
-                                    <form action="{{ url('book/'.$book->id) }}" method="POST">
+                                    <form action="{{ url('books/'.$book->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
 

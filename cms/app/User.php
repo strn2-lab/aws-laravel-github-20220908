@@ -5,10 +5,14 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes; //追記
 
 class User extends Authenticatable
 {
     use Notifiable;
+    
+    use SoftDeletes; //追記
+
 
     /**
      * The attributes that are mass assignable.
@@ -36,8 +40,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    protected $dates = ['deleted_at']; //追記
+    
     public function book()
   {
-    return $this->hasMany('App\Book');
+    return $this->hasMany('App\User');
   }
 }
