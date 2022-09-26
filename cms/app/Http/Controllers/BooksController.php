@@ -165,15 +165,34 @@ class BooksController extends Controller
             return redirect('/passwordform')
                 ->with('warning','現在のパスワードが違います');
         }
-
+        
         //新規パスワードの確認
+        elseif($request->new_password != $request->new_password_confirmation)
+        {
+            return redirect('/passwordform')
+                ->with('warning','確認のパスワードが違います');
+        }
+        elseif(strlen($request->new_password) < 8)
+        {
+            return redirect('/passwordform')
+                ->with('warning','パスワードは8文字以上にしてください');
+        }
+        // elseif($request->new_password = $user->password)
+        // {
+        //     return redirect('/passwordform')
+        //         ->with('warning','同じパスワードを使用しています');
+        // }
+        elseif($request->new_password != $user->password and $request->new_password = $request->new_password_confirmation)
+        {
         $this->validator($request->all())->validate();
 
         $user->password = bcrypt($request->new_password);
         $user->save();
 
         return redirect ('/passwordform')
+            ->with('warning','')
             ->with('status','パスワードの変更が終了しました');
+        }
             
     }
     public function userdestroy()
