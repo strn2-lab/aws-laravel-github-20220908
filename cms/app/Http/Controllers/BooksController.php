@@ -145,7 +145,7 @@ class BooksController extends Controller
 
     public function passwordedit()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         return view('passwordform');
     }
     
@@ -159,11 +159,11 @@ class BooksController extends Controller
     public function passwordupdate(Request $request)
     {
 
-        $user = \Auth::user();
+        $user = Auth::user();
         if(!password_verify($request->current_password,$user->password))
         {
-            return redirect('/password/change')
-                ->with('warning','パスワードが違います');
+            return redirect('/passwordform')
+                ->with('warning','現在のパスワードが違います');
         }
 
         //新規パスワードの確認
@@ -174,6 +174,7 @@ class BooksController extends Controller
 
         return redirect ('/passwordform')
             ->with('status','パスワードの変更が終了しました');
+            
     }
     public function userdestroy()
     {

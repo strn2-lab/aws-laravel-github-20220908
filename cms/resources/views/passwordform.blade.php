@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-@if(session('warning'))//エラー文を表示させる
+@if(session('warning'))
         <div class="alert alert-danger">
             {{ session('warning') }}
         </div>
