@@ -145,7 +145,7 @@ class BooksController extends Controller
 
     public function passwordedit()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         return view('passwordform');
     }
     
@@ -159,21 +159,41 @@ class BooksController extends Controller
     public function passwordupdate(Request $request)
     {
 
-        $user = \Auth::user();
+        $user = Auth::user();
         if(!password_verify($request->current_password,$user->password))
         {
-            return redirect('/password/change')
-                ->with('warning','パスワードが違います');
+            return redirect('/passwordform')
+                ->with('warning','現在のパスワードが違います');
         }
-
+        
         //新規パスワードの確認
+        elseif($request->new_password != $request->new_password_confirmation)
+        {
+            return redirect('/passwordform')
+                ->with('warning','確認のパスワードが違います');
+        }
+        elseif(strlen($request->new_password) < 8)
+        {
+            return redirect('/passwordform')
+                ->with('warning','パスワードは8文字以上にしてください');
+        }
+        elseif(password_verify($request->new_password,$user->password))
+        {
+            return redirect('/passwordform')
+                ->with('warning','同じパスワードを使用しています');
+        }
+        else
+        {
         $this->validator($request->all())->validate();
 
         $user->password = bcrypt($request->new_password);
         $user->save();
 
         return redirect ('/passwordform')
+            ->with('warning','')
             ->with('status','パスワードの変更が終了しました');
+        }
+            
     }
     public function userdestroy()
     {
