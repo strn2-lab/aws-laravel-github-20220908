@@ -13,7 +13,7 @@
         <!-- バリデーションエラーの表示に使用-->
 
         <!-- 本のタイトル -->
-        <form action="{{ url('setting/settingupdate') }}" method="POST">
+        <form enctype="multipart/form-data" action="{{ url('setting/settingupdate') }}" method="POST">
             @csrf
             <div class="form-row col-md-12">
                 <div class="form-group col-md-6">

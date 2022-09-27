@@ -177,12 +177,12 @@ class BooksController extends Controller
             return redirect('/passwordform')
                 ->with('warning','パスワードは8文字以上にしてください');
         }
-        // elseif($request->new_password = $user->password)
-        // {
-        //     return redirect('/passwordform')
-        //         ->with('warning','同じパスワードを使用しています');
-        // }
-        elseif($request->new_password != $user->password and $request->new_password = $request->new_password_confirmation)
+        elseif(password_verify($request->new_password,$user->password))
+        {
+            return redirect('/passwordform')
+                ->with('warning','同じパスワードを使用しています');
+        }
+        else
         {
         $this->validator($request->all())->validate();
 
