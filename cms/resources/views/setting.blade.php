@@ -33,7 +33,7 @@
             </div>
             <div class="col-sm-6">
                 <label>アイコン</label>
-                  <input type="file" name="item_icon">
+                  <input type="file" name="profile_image">
             </div>
             <div class="form-row col-md-12">
         <a href="{{ url('passwordform/') }}">パスワードの変更</a>

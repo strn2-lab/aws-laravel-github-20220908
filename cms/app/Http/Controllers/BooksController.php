@@ -132,12 +132,20 @@ class BooksController extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
+        $icon = $request->file('profile_image'); //file取得
+          if( !empty($icon) ){                //fileが空かチェック
+            $iconname = $icon->getClientOriginalName();   //ファイル名を取得
+            $move = $icon->move('./iconUpload/',$iconname);  //ファイルを移動：パスが“./upload/”の場合もあるCloud9
+          }else{
+            $iconname = "";
+          }
         
         //設定更新
         $users = User::find(Auth::user()->id);
         $users->name   = $request->name;
         $users->email = $request->email;
         $users->password = $request->password;
+        $users->profile_image = $iconname;
         $users->save();
         return redirect('/setting')->with('message', '更新が完了しました');
     }
