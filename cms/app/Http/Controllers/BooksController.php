@@ -132,12 +132,20 @@ class BooksController extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
+        $icon = $request->file('profile_image'); //file取得
+          if( !empty($icon) ){                //fileが空かチェック
+            $iconname = $icon->getClientOriginalName();   //ファイル名を取得
+            $move = $icon->move('./iconUpload/',$iconname);  //ファイルを移動：パスが“./upload/”の場合もあるCloud9
+          }else{
+            $iconname = "";
+          }
         
         //設定更新
         $users = User::find(Auth::user()->id);
         $users->name   = $request->name;
         $users->email = $request->email;
         $users->password = $request->password;
+        $users->profile_image = $iconname;
         $users->save();
         return redirect('/setting')->with('message', '更新が完了しました');
     }
@@ -167,31 +175,33 @@ class BooksController extends Controller
         }
         
         //新規パスワードの確認
-        elseif($request->new_password != $request->new_password_confirmation)
-        {
+        
+        $new_password = $request->new_password;
+        switch($new_password){
+            case $new_password != $request->new_password_confirmation;
             return redirect('/passwordform')
                 ->with('warning','確認のパスワードが違います');
-        }
-        elseif(strlen($request->new_password) < 8)
-        {
+                break;
+                
+            case strlen($new_password) < 8;
             return redirect('/passwordform')
                 ->with('warning','パスワードは8文字以上にしてください');
-        }
-        elseif(password_verify($request->new_password,$user->password))
-        {
+                break;
+                
+            case $new_password == $request->current_password;
             return redirect('/passwordform')
                 ->with('warning','同じパスワードを使用しています');
-        }
-        else
-        {
-        $this->validator($request->all())->validate();
+                break;
+            default;
+            $this->validator($request->all())->validate();
 
-        $user->password = bcrypt($request->new_password);
-        $user->save();
+            $user->password = bcrypt($request->new_password);
+            $user->save();
 
-        return redirect ('/passwordform')
-            ->with('warning','')
-            ->with('status','パスワードの変更が終了しました');
+            return redirect ('/passwordform')
+               ->with('warning','')
+               ->with('status','パスワードの変更が終了しました');
+            break;
         }
             
     }
