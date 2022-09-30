@@ -2,6 +2,8 @@
 use App\Book;
 use Illuminate\Http\Request; 
 
+Route::get('/statuschange','BooksController@statuschange');
+
 //本ダッシュボード表示
 Route::get('/', 'BooksController@index');
 
@@ -33,5 +35,9 @@ Route::put('/password/change','BooksController@passwordupdate')->name('password.
 //Auth
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+
 
 

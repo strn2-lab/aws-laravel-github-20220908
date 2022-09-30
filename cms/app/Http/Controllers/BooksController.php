@@ -10,30 +10,28 @@ use Validator;  //バリデーションを使えるようにする
 use Auth;       //認証モデルを使用する
 use Helper;
 
-class BooksController extends Controller
-{
+class BooksController extends Controller{
     //コンストラクタ （このクラスが呼ばれたら最初に処理をする）
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
     }
     
     
     //本ダッシュボード表示
-    public function index() {
+    public function index(){
         $books = Book::where('user_id',Auth::user()->id)->orderBy('created_at', 'asc')->paginate(3);
-        return view('books', [
-            'books' => $books,
-        ]);
+            return view('books', [
+                'books' => $books,
+            ]);
     }
 
     
     //更新画面
     public function edit($book_id){
         $books = Book::where('user_id',Auth::user()->id)->find($book_id);
-        return view('booksedit', [
-           'book' => $books
-        ]);
+            return view('booksedit', [
+                'book' => $books
+            ]);
     }
     
     //更新
@@ -76,7 +74,7 @@ class BooksController extends Controller
                 'item_number4' => 'required',
         ]);
         //バリデーション:エラー 
-        if ($validator->fails()) {
+        if($validator->fails()){
                 return redirect('/')
                     ->withInput()
                     ->withErrors($validator);
@@ -88,8 +86,8 @@ class BooksController extends Controller
             $move = $file->move('./upload/',$filename);  //ファイルを移動：パスが“./upload/”の場合もあるCloud9
           }else{
             $filename = "";
-              
           }
+          
         //Eloquentモデル（登録処理）
         $books = new Book;
         $books->user_id  = Auth::user()->id; //追加のコード
@@ -106,15 +104,15 @@ class BooksController extends Controller
     //削除処理
     public function destroy(Book $book) {
         $book->delete();
-        return redirect('/');
+            return redirect('/');
     }
     
     //設定画面
     public function UserSetting() {
         $users = User::where('user_id',Auth::user()->id);
-        return view('setting', [
-            'setting' => $users,
-        ]);
+            return view('setting', [
+                'setting' => $users,
+            ]);
     }
     
     //設定更新
@@ -127,7 +125,7 @@ class BooksController extends Controller
             'password' => 'required',
         ]); 
         //バリデーション:エラー 
-        if ($validator->fails()) {
+        if ($validator->fails()){
             return redirect('/')
                 ->withInput()
                 ->withErrors($validator);
@@ -151,69 +149,76 @@ class BooksController extends Controller
     }
     
 
-    public function passwordedit()
-    {
+    public function passwordedit(){
         $user = Auth::user();
-        return view('passwordform');
+            return view('passwordform');
     }
     
-    protected function validator(array $data)
-    {
-        return Validator::make($data,[
-            'new_password' => 'required|string|min:8|confirmed',
+    protected function validator(array $data){
+            return Validator::make($data,[
+                'new_password' => 'required|string|min:8|confirmed',
             ]);
     }
     
-    public function passwordupdate(Request $request)
-    {
-
+    public function passwordupdate(Request $request){
         $user = Auth::user();
-        if(!password_verify($request->current_password,$user->password))
-        {
+        if(!password_verify($request->current_password,$user->password)){
             return redirect('/passwordform')
-                ->with('warning','現在のパスワードが違います');
-        }
-        
+            ->with('warning','現在のパスワードが違います');
+        }else{
         //新規パスワードの確認
-        
         $new_password = $request->new_password;
         switch($new_password){
             case $new_password != $request->new_password_confirmation;
-            return redirect('/passwordform')
+                return redirect('/passwordform')
                 ->with('warning','確認のパスワードが違います');
                 break;
                 
             case strlen($new_password) < 8;
-            return redirect('/passwordform')
+                return redirect('/passwordform')
                 ->with('warning','パスワードは8文字以上にしてください');
                 break;
                 
             case $new_password == $request->current_password;
-            return redirect('/passwordform')
+                return redirect('/passwordform')
                 ->with('warning','同じパスワードを使用しています');
                 break;
+                
             default;
-            $this->validator($request->all())->validate();
+                $this->validator($request->all())->validate();
+                $user->password = bcrypt($request->new_password);
+                $user->save();
 
-            $user->password = bcrypt($request->new_password);
-            $user->save();
-
-            return redirect ('/passwordform')
-               ->with('warning','')
-               ->with('status','パスワードの変更が終了しました');
-            break;
+                return redirect ('/passwordform')
+                ->with('warning','')
+                ->with('status','パスワードの変更が終了しました');
+                break;
+            }
         }
-            
     }
-    public function userdestroy()
-    {
+    
+    public function userdestroy(){
         $user = User::find(Auth::user()->id);
         $user->delete();
         return redirect('/');
     }
 
-    public function deleteconfirm()
-    {
+    public function deleteconfirm(){
         return view('users.deleteconfirm');
+    }
+    
+    public function statuschange(){
+        $user = Auth::user();
+        
+            if($user->work_status == "退勤中"){
+                $user->work_status = "出勤中";
+                $user->save();
+            }
+            else{
+                $user->work_status = "退勤中";
+                $user->save();
+            }
+            
+        return redirect('/');
     }
 }
