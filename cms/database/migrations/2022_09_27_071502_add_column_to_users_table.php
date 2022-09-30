@@ -15,6 +15,7 @@ class AddColumnToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('profile_image')->default('default.png');
+            $table->string('work_status')->default('退勤中');
         });
     }
 
@@ -27,6 +28,7 @@ class AddColumnToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('profile_image');
+            $table->dropColumn('work_status');
         });
     }
 }

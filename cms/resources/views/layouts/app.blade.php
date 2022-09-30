@@ -27,6 +27,18 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     勤怠管理アプリケーション(設楽制作)
                 </a>
+                @auth
+                    <a class="navbar-brand">{{ Auth::user()->work_status }}</a>
+                    <form action="{{ url('/statuschange') }}" method="GET" class="form-horizontal">
+                    <button type="submit" class="btn btn-primary">
+                        @if(Auth::user()->work_status === "退勤中")
+                        出勤する
+                        @else
+                        退勤する
+                        @endif
+                        </button>
+                    </form>
+                @endauth
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -65,7 +77,7 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
-                                    <a class="dropdown-item" href="{{ url('setting/') }}">setting</a>
+                                    <a class="dropdown-item" href="{{ url('setting/') }}">Setting</a>
                                 </div>
                             </li>
                         @endguest
