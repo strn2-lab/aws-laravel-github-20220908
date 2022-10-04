@@ -13,6 +13,18 @@
         <!-- バリデーションエラーの表示に使用-->
 
         <!-- 本のタイトル -->
+        @auth
+                    <a>{{ Auth::user()->work_status }}</a>
+                    <form action="{{ url('/statuschange') }}" method="GET" class="form-horizontal">
+                    <button type="submit" class="btn" onclick="buttonClick()">
+                        @if(Auth::user()->work_status === "退勤中")
+                        <a class="workstart navbar-brand">出勤する<a>
+                        @else
+                        <a class="workend navbar-brand">退勤する<a>
+                        @endif
+                        </button>
+                    </form>
+                @endauth
         <form enctype="multipart/form-data" action="{{ url('books') }}"
         method="POST" class="form-horizontal">
             @csrf

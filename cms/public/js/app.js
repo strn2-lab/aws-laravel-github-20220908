@@ -115,6 +115,7 @@ var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ "./node_
 var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ "./node_modules/axios/lib/helpers/isURLSameOrigin.js");
 var createError = __webpack_require__(/*! ../core/createError */ "./node_modules/axios/lib/core/createError.js");
 
+
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
     var requestData = config.data;
@@ -49607,6 +49608,7 @@ Vue.prototype.$mount = function (
   }
   return mount.call(this, el, hydrating)
 };
+
 
 /**
  * Get outerHTML of elements, taking care

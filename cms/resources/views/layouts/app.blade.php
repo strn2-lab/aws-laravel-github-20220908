@@ -12,6 +12,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/extra.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -28,16 +29,7 @@
                     勤怠管理アプリケーション(設楽制作)
                 </a>
                 @auth
-                    <a class="navbar-brand">{{ Auth::user()->work_status }}</a>
-                    <form action="{{ url('/statuschange') }}" method="GET" class="form-horizontal">
-                    <button type="submit" class="btn btn-primary">
-                        @if(Auth::user()->work_status === "退勤中")
-                        出勤する
-                        @else
-                        退勤する
-                        @endif
-                        </button>
-                    </form>
+                    <a class="navbar-brand" id="RealtimeClockArea"></a>
                 @endauth
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>

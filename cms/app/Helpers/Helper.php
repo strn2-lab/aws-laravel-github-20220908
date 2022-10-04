@@ -52,6 +52,9 @@ class Helper
         $breaktime = date("H:i:s", $break_time_stump);
         return $breaktime;
     }
-    
+    public function time(){
+        $nowTime = new Date();
+        $nowHour = $nowTime->getHours();
+    }
     
 }

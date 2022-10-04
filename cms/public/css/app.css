@@ -10902,3 +10902,15 @@ a.text-dark:focus {
 .icon{
   border-radius: 35px;
 }
+.workstart{
+  color: white;
+  background-color: blue;
+  margin: auto;
+  border-radius: 5px;
+}
+.workend{
+  color: white;
+  background-color: red;
+  margin: auto;
+  border-radius: 5px;
+}
