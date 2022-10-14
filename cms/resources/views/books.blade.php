@@ -7,6 +7,7 @@
         <div class="card-title">
             勤怠登録
         </div>
+        
 
         <!-- バリデーションエラーの表示に使用-->
         @include('common.errors')
@@ -14,30 +15,52 @@
 
         <!-- 本のタイトル -->
         @auth
-                    <a>{{ Auth::user()->work_status }}</a>
-                    <form action="{{ url('/statuschange') }}" method="GET" class="form-horizontal">
+            <a>
+                @if(Auth::user()->work_status === "0")
+                        <a>退勤中</a>
+                @else
+                        <a>出勤中</a>
+                @endif
+            </a>
+            <div class="form-row col-md-12">
+                
+                <div class="form-group col-md-6">
+                <form action="{{ url('/statuschange') }}" method="GET" class="form-horizontal">
                     <button type="submit" class="btn" onclick="buttonClick()">
-                        @if(Auth::user()->work_status === "退勤中")
-                        <a class="workstart navbar-brand">出勤する<a>
-                        @else
-                        <a class="workend navbar-brand">退勤する<a>
+                        @if(Auth::user()->work_status === "0")
+                        <a class="start navbar-brand">出勤する</a>
+                            
+                        @elseif(Auth::user()->work_status === "1")
+                        <a class="end navbar-brand">休憩開始</a>
+                        
+                        @elseif(Auth::user()->work_status === "2")
+                        <a class="end navbar-brand">休憩終了</a>
+                        
+                        @elseif(Auth::user()->work_status === "3")
+                        <a class="end navbar-brand">退勤する</a>
+                            
                         @endif
-                        </button>
-                    </form>
-                @endauth
+                    </button>
+                </form>
+                </div>
+                
+        
+        </div>
+            
+        @endauth
         <form enctype="multipart/form-data" action="{{ url('books') }}"
         method="POST" class="form-horizontal">
             @csrf
             <div class="form-row col-md-12">
                 <div class="form-group col-md-6">
                     <label for="book" class="col-sm-3 control-label">日付</label>
-                    <input type="date" name="item_date" class="form-control" value="{{ old('item_date') }}">
+                    <input type="date" name="item_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
                 </div>
             </div>
             <div class="form-row col-md-12">
                 <div class="form-group col-md-6">
                     <label for="number" class="col-sm-3 control-label">勤務開始時間</label>
-                    <input type="time" name="item_number" class="form-control" value="{{ old('item_number') }}">
+                    <input type="time" name="item_number" class="form-control" value="">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="number" class="col-sm-3 control-label">勤務終了時間</label>
@@ -55,10 +78,10 @@
                 </div>
             </div>
             
-            <div class="col-sm-6">
-                <label>ファイル</label>
-                  <input type="file" name="item_file">
-            </div>
+            <!--<div class="col-sm-6">-->
+            <!--    <label>ファイル</label>-->
+            <!--      <input type="file" name="item_file">-->
+            <!--</div>-->
 
             <!-- 本 登録ボタン -->
             <div class="form-row col-md-12">
@@ -146,14 +169,15 @@
 
                                 <!-- 本: 削除ボタン -->
                                 <td>
-                                    <form action="{{ url('books/'.$book->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="submit" class="btn btn-danger">
-                                            削除
-                                        </button>
-                                    </form>
+                                    @if(Auth::user()->work_status === "0")
+                                    <form action="{{ url('book/'.$book->id) }}" method="POST">
+                                            @csrf               <!-- CSRFからの保護 -->
+                                            @method('DELETE')   <!-- 擬似フォームメソッド -->
+                                                        <button type="submit" class="btn btn-danger">
+                                                                削除
+                                                        </button>
+                                            </form>
+                                     @endif
                                 </td>
 
                             </tr>

@@ -16,12 +16,13 @@ class CreateBooksTable extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id'); //Add:user_id
-            $table->date('item_date');
-            $table->string('item_file');     //Add:item_file
-            $table->time('item_number');
-            $table->time('item_number2');
-            $table->time('item_number3');
-            $table->time('item_number4');
+            $table->date('item_date')->nullable();
+            $table->string('item_file')->nullable();   //Add:item_file
+            $table->string('item_icon')->nullable();     //Add:item_icon          
+            $table->time('item_number')->nullable();
+            $table->time('item_number2')->nullable();
+            $table->time('item_number3')->nullable();
+            $table->time('item_number4')->nullable();
             $table->timestamps();
         });
     }

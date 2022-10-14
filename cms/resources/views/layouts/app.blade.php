@@ -43,6 +43,11 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        @auth
+                        <li class="nav-item dropdown">
+                        <a class="navbar-brand">やることリスト</a>
+                        </li>
+                        @endauth
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">

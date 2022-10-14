@@ -10902,13 +10902,14 @@ a.text-dark:focus {
 .icon{
   border-radius: 35px;
 }
-.workstart{
+
+.start{
   color: white;
   background-color: blue;
   margin: auto;
   border-radius: 5px;
 }
-.workend{
+.end{
   color: white;
   background-color: red;
   margin: auto;

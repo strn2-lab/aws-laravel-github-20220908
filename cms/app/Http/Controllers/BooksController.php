@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 //使うClassを宣言:自分で追加
 use App\Book;   //Bookモデルを使えるようにする
 use App\User;
+use Carbon\Carbon;
 use Validator;  //バリデーションを使えるようにする
 use Auth;       //認証モデルを使用する
 use Helper;
+
 
 class BooksController extends Controller{
     //コンストラクタ （このクラスが呼ばれたら最初に処理をする）
@@ -65,20 +67,20 @@ class BooksController extends Controller{
     
     //登録
     public function store(Request $request) {
-        //バリデーション
-        $validator = Validator::make($request->all(), [
-                'item_date' => 'required',
-                'item_number' => 'required',
-                'item_number2' => 'required',
-                'item_number3' => 'required',
-                'item_number4' => 'required',
-        ]);
+        // //バリデーション
+        // $validator = Validator::make($request->all(), [
+        //         'item_date' => 'required',
+        //         'item_number' => 'required',
+        //         'item_number2' => 'required',
+        //         'item_number3' => 'required',
+        //         'item_number4' => 'required',
+        // ]);
         //バリデーション:エラー 
-        if($validator->fails()){
-                return redirect('/')
-                    ->withInput()
-                    ->withErrors($validator);
-        }
+        // if($validator->fails()){
+        //         return redirect('/')
+        //             ->withInput()
+        //             ->withErrors($validator);
+        // }
         
         $file = $request->file('item_file'); //file取得
           if( !empty($file) ){                //fileが空かチェック
@@ -101,10 +103,9 @@ class BooksController extends Controller{
         return redirect('/')->with('message', '勤務登録が完了しました');
     }
         
-    //削除処理
     public function destroy(Book $book) {
         $book->delete();
-            return redirect('/');
+        return redirect('/');
     }
     
     //設定画面
@@ -207,15 +208,46 @@ class BooksController extends Controller{
         return view('users.deleteconfirm');
     }
     
-    public function statuschange(){
+    public function statuschange(Request $request){
         $user = Auth::user();
-        
-            if($user->work_status == "退勤中"){
-                $user->work_status = "出勤中";
+            if($user->work_status == "0"){
+                
+                $books = new Book;
+                $books->user_id  = Auth::user()->id; //追加のコード
+                $books->item_date = Carbon::now();
+                $books->item_number = Carbon::now()->timezone('Asia/Tokyo')->format("H:i:s");
+                
+                $books->save();
+                
+                $user->work_status = "1";
                 $user->save();
             }
-            else{
-                $user->work_status = "退勤中";
+            elseif($user->work_status == "1"){
+                
+                $books = Book::where('user_id',Auth::user()->id)->latest('id')->first();
+                $books->item_number3 = Carbon::now()->timezone('Asia/Tokyo')->format("H:i:s");
+                $books->save();
+                
+                $user->work_status = "2";
+                $user->save();
+            }
+            elseif($user->work_status == "2"){
+                
+                $books = Book::where('user_id',Auth::user()->id)->latest('id')->first();
+                $books->item_number4 = Carbon::now()->timezone('Asia/Tokyo')->format("H:i:s");
+                $books->save();
+                
+                $user->work_status = "3";
+                $user->save();
+            }
+            elseif($user->work_status == "3"){
+                
+                $books = Book::where('user_id',Auth::user()->id)->latest('id')->first();
+                $books->item_number2 = Carbon::now()->timezone('Asia/Tokyo')->format("H:i:s");
+                $books->save();
+                
+                
+                $user->work_status = "0";
                 $user->save();
             }
             
