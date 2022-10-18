@@ -53,7 +53,7 @@
             @csrf
             <div class="form-row col-md-12">
                 <div class="form-group col-md-6">
-                    <label for="book" class="col-sm-3 control-label">日付</label>
+                    <label for="book" class="col-sm-3 control-label"></label>
                     <input type="date" name="item_date" class="form-control" value="<?php echo date('Y-m-d'); ?>">
                 </div>
             </div>

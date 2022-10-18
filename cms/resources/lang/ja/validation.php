@@ -151,6 +151,8 @@ return [
         'item_number2' => '勤務終了時間',
         'item_number3'    => '休憩開始時間',
         'item_number4'   => '休憩終了時間',
+        'task_title' => 'タイトル',
+        'task_text' => '詳細',
     ],
 
 ];

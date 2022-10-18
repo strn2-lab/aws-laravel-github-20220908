@@ -1,9 +1,16 @@
 <?php
 use App\Book;
+use App\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request; 
 
 Route::get('/statuschange','BooksController@statuschange');
+
+//タスク処理
+Route::get('/taskadd','BooksController@taskadd');
+
+Route::post('/tasks','BooksController@taskstore');
+
 
 //本ダッシュボード表示
 Route::get('/', 'BooksController@index');

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 //使うClassを宣言:自分で追加
 use App\Book;   //Bookモデルを使えるようにする
+use App\Task;
 use App\User;
 use Carbon\Carbon;
 use Validator;  //バリデーションを使えるようにする
@@ -208,7 +209,7 @@ class BooksController extends Controller{
         return view('users.deleteconfirm');
     }
     
-    public function statuschange(Request $request){
+    public function statuschange(){
         $user = Auth::user();
             if($user->work_status == "0"){
                 
@@ -252,5 +253,31 @@ class BooksController extends Controller{
             }
             
         return redirect('/');
+    }
+    
+    public function taskadd(){
+        $books = Book::where('user_id',Auth::user()->id);
+        return view('taskadd');
+    }
+    //登録
+    public function taskstore(Request $request) {
+        //バリデーション
+        $validator = Validator::make($request->all(), [
+                'task_title' => 'required',
+                'task_text' => 'required',
+        ]);
+        if($validator->fails()){
+                return redirect('/taskadd')
+                    ->withInput()
+                    ->withErrors($validator);
+        }
+          
+        //Eloquentモデル（登録処理）
+        $tasks = new Task;
+        $tasks->user_id  = Auth::user()->id; //追加のコード
+        $tasks->task_title = $request->task_title;
+        $tasks->task_text = $request->task_text;
+        $tasks->save();
+        return redirect('/taskadd')->with('message', 'タスク登録が完了しました');
     }
 }

@@ -45,7 +45,14 @@
                     <ul class="navbar-nav ml-auto">
                         @auth
                         <li class="nav-item dropdown">
-                        <a class="navbar-brand">やることリスト</a>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            やることリスト
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a>タスク一覧</a>
+                        <a href="{{ url('taskadd/') }}">追加</a>
+                        
+                        </div>
                         </li>
                         @endauth
                         <!-- Authentication Links -->
@@ -60,7 +67,7 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ Auth::user()->name }}<img class="icon" src="iconUpload/{{Auth::user()->profile_image}}" width="20" height="20"><span class="caret"></span>
                                 </a>
 
